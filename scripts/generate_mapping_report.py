@@ -583,7 +583,10 @@ html += f'''
 </html>'''
 
 # Save HTML file
-output_file = 'C:/Users/arausch/Documents/VS_Studio/MCP_IDMC/m_arausch_DPR_DISTINCT_ISIN3_analysis.html'
+output_dir = 'C:/Users/arausch/Documents/VS_Studio/MCP_IDMC/output'
+import os
+os.makedirs(output_dir, exist_ok=True)
+output_file = f'{output_dir}/m_arausch_DPR_DISTINCT_ISIN3_analysis.html'
 with open(output_file, 'w', encoding='utf-8') as f:
     f.write(html)
 
