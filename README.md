@@ -42,7 +42,7 @@ IDMC_PASS=yourpassword
 ### 3. Run the server
 
 ```bash
-python server.py
+python src/server.py
 ```
 
 ### 4. Register in Claude Code
@@ -54,7 +54,7 @@ Add to `~/.claude/mcp.json`:
   "mcpServers": {
     "idmc": {
       "command": "python",
-      "args": ["C:/path/to/MCP_IDMC/server.py"],
+      "args": ["C:/path/to/MCP_IDMC/src/server.py"],
       "env": {
         "IDMC_USER": "your@email.com",
         "IDMC_PASS": "yourpassword"
@@ -75,7 +75,7 @@ AI Agent (Claude)
      │
      │  MCP tool call
      ▼
-FastMCP server (server.py)
+FastMCP server (src/server.py)
      │
      │  IDMC REST API  /api/v2/mapping
      │                 /api/v2/job
@@ -84,6 +84,54 @@ FastMCP server (server.py)
      ▼
 Informatica IDMC (CDI)
 ```
+
+---
+
+## Project Structure
+
+```
+MCP_IDMC/
+├── src/
+│   └── server.py              # Main MCP server application
+├── scripts/
+│   └── generate_mapping_report.py  # Generate HTML reports from mapping exports
+├── json/
+│   └── mapping_sample.json    # Sample mapping metadata
+├── output/
+│   └── *.html                 # Generated HTML analysis reports
+├── .env                       # Your IDMC credentials (not in git)
+├── .env.example              # Template for credentials
+├── requirements.txt          # Python dependencies
+└── README.md                 # This file
+```
+
+---
+
+## Scripts
+
+### Mapping Report Generator
+
+Generate a beautiful HTML analysis report from an exported IDMC mapping.
+
+**Usage:**
+
+1. Export your mapping from IDMC (Export > Mapping)
+2. Extract the export package
+3. Update paths in `scripts/generate_mapping_report.py`:
+   - Path to the API mapping JSON (from `get_mapping()` or saved locally)
+   - Path to the exported `@3.bin` file (usually in `Explore/[Project]/[Folder]/[Mapping].DTEMPLATE.zip/bin/@3.bin`)
+4. Run the script:
+   ```bash
+   python scripts/generate_mapping_report.py
+   ```
+5. Find the generated HTML report in `output/`
+
+The report includes:
+- General mapping information (creator, timestamps, status)
+- Transformation summary with counts by type
+- Detailed transformation breakdown (Sources, Expressions, Aggregators, Targets)
+- Visual data flow diagram
+- Mapping purpose description
 
 ---
 
@@ -97,7 +145,7 @@ The server is pre-configured for the `dm1-em` pod:
 | CDI API base | `<serverUrl>/api/v2/` (returned at login) |
 | CAI base URL | `https://emc1-cai.dm1-em.informaticacloud.com/active-bpel/rt/` |
 
-To use a different pod, update `LOGIN_URL` and `CAI_BASE_URL` in `server.py`.
+To use a different pod, update `LOGIN_URL` and `CAI_BASE_URL` in `src/server.py`.
 
 ---
 
